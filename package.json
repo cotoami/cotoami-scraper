@@ -2,7 +2,7 @@
   "name": "cotoami-scraper",
   "version": "1.0.0",
   "description": "Cotoami Scraper is a Chrome Extension that scrapes web pages to generate inputs for Cotoami knowledge-bases.",
-  "main": "background.js",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -1,4 +1,11 @@
 import 'whatwg-fetch'
+import Vue from 'vue'
+import Test from './Test.vue'
+
+new Vue({
+  el: '#test',
+  render: c => c(Test)
+})
 
 let changeColor = document.getElementById('changeColor');
 

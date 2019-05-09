@@ -5,7 +5,9 @@
   "permissions": [
     "activeTab",
     "declarativeContent",
-    "storage"
+    "storage",
+    "cookies",
+    "http://localhost:4000/"
   ],
   "background": {
     "scripts": [

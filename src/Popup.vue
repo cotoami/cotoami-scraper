@@ -1,6 +1,8 @@
 <template>
   <div id="popup">
-    <div id="posted" v-if="posted">Posted.</div>
+    <div id="posted" v-if="posted">
+      <img src="./done.gif"> Posted.
+    </div>
     <div id="scraped" v-else-if="scraper && scraper.scraped">
       <div id="scraped-content" v-html="scraper.html()"></div>
       <div class="buttons">

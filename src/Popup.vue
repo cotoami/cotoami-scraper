@@ -1,10 +1,8 @@
 <template>
   <div id="popup">
     <div id="posted" v-if="posted">Posted.</div>
-    <div id="scraped-content" v-else-if="scraped">
-      <div class="coto">
-        <a v-bind:href="url" target="_blank">{{ title }}</a>
-      </div>
+    <div id="scraped" v-else-if="scraper && scraper.scraped">
+      <div id="scraped-content" v-html="scraper.html()"></div>
       <div class="buttons">
         <button class="button" v-on:click="clear()" v-if="!posting">Cancel</button>
         <button
@@ -15,7 +13,7 @@
       </div>
     </div>
     <div id="scrape-buttons" v-else>
-      <div id="scrape-title" v-on:click="scrapeTitle()">
+      <div id="scrape-title" v-on:click="scrape(createPageLinkScraper())">
         <button class="button">Page link</button>
       </div>
       <div id="scrape-selection">
@@ -30,15 +28,15 @@
 
 <script>
 import "whatwg-fetch";
+import PageLinkScraper from "./PageLinkScraper.js";
 
 export default {
   data() {
     return {
       scraped: false,
-      title: "",
-      url: "",
       posting: false,
-      posted: false
+      posted: false,
+      scraper: null
     };
   },
 
@@ -47,23 +45,19 @@ export default {
       console.log("hello");
     },
 
-    scrapeTitle() {
-      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-        this.title = tabs[0].title;
-        this.url = tabs[0].url;
-        this.scraped = true;
-      });
+    createPageLinkScraper() {
+      return new PageLinkScraper();
+    },
+
+    scrape(scraper) {
+      this.scraper = scraper;
+      this.scraper.scrape();
     },
 
     clear() {
-      this.title = "";
-      this.url = "";
-      this.scraped = false;
-      this.posting = false;
-    },
-
-    createContent() {
-      return `[${this.title}](${this.url})`;
+      if (this.scraper) {
+        this.scraper.clear();
+      }
     },
 
     post() {
@@ -78,13 +72,14 @@ export default {
         },
         body: JSON.stringify({
           coto: {
-            content: this.createContent(),
+            content: this.scraper.markdown(),
             summary: null,
             cotonoma_id: null
           }
         })
       }).then(data => {
         this.clear();
+        this.posting = false;
         this.posted = true;
       });
     }

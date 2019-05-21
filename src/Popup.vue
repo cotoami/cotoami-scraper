@@ -68,4 +68,8 @@ export default {
 #scrape-buttons {
   padding: 1rem;
 }
+
+button {
+  width: 200px;
+}
 </style>

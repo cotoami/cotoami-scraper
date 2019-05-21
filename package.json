@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "NODE_ENV=development webpack --mode=development --watch",
     "build": "webpack"
   },
   "repository": {

@@ -1,6 +1,7 @@
 <template>
   <div id="popup">
-    <div id="scraped-content" v-if="scraped">
+    <div id="posted" v-if="posted">Posted.</div>
+    <div id="scraped-content" v-else-if="scraped">
       <div class="coto">
         <a v-bind:href="url" target="_blank">{{ title }}</a>
       </div>
@@ -36,7 +37,8 @@ export default {
       scraped: false,
       title: "",
       url: "",
-      posting: false
+      posting: false,
+      posted: false
     };
   },
 
@@ -83,6 +85,7 @@ export default {
         })
       }).then(data => {
         this.clear();
+        this.posted = true;
       });
     }
   },

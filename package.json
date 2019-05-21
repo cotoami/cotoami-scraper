@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/marubinotto/cotoami-scraper",
   "devDependencies": {
+    "copy-webpack-plugin": "^5.0.3",
     "css-loader": "^2.1.1",
     "file-loader": "^3.0.1",
     "node-sass": "^4.12.0",

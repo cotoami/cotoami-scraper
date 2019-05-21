@@ -1,6 +1,7 @@
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const ExtensionReloader = require('webpack-extension-reloader');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -52,6 +53,9 @@ module.exports = {
   },
   plugins: [
     new VueLoaderPlugin(),
-    new ExtensionReloader()
+    new ExtensionReloader(),
+    new CopyPlugin([
+      { from: 'static' }
+    ])
   ]
 };

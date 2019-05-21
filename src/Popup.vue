@@ -70,7 +70,7 @@ export default {
 
     post() {
       this.posting = true;
-      fetch("http://localhost:4000/api/cotos", {
+      fetch(COTOAMI_URL + "/api/cotos", {
         credentials: "include",
         method: "POST",
         headers: {

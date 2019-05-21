@@ -15,7 +15,7 @@
     </div>
     <div id="scrape-buttons" v-else>
       <div id="scrape-title" v-on:click="scrapeTitle()">
-        <button class="button">Title as Link</button>
+        <button class="button">Page link</button>
       </div>
       <div id="scrape-selection">
         <button class="button" disabled>Selection</button>

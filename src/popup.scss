@@ -1,0 +1,27 @@
+#scrape-buttons {
+  padding: 1rem;
+
+  button {
+    width: 200px;
+  }
+}
+
+#scraped-content {
+  padding: 1rem;
+  padding-bottom: 0;
+
+  div.coto {
+    width: 480px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    background-color: #fff;
+  }
+
+  div.buttons {
+    margin-top: 1rem;
+    text-align: right;
+  }
+}
+
+

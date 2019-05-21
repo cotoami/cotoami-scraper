@@ -1,13 +1,24 @@
 <template>
-  <div id="scrape-buttons">
-    <div id="scrape-title">
-      <button>Title as Link</button>
+  <div id="popup">
+    <div id="scraped-content" v-if="scraped">
+      <div class="coto">
+        <a v-bind:href="url" target="_blank">{{ title }}</a>
+      </div>
+      <div class="buttons">
+        <button class="button" v-on:click="cancel()">Cancel</button>
+        <button class="button button-primary">Post</button>
+      </div>
     </div>
-    <div id="scrape-selection">
-      <button>Selection</button>
-    </div>
-    <div id="scrape-kindle-highlights">
-      <button>Kindle highlights</button>
+    <div id="scrape-buttons" v-else>
+      <div id="scrape-title" v-on:click="scrapeTitle()">
+        <button class="button">Title as Link</button>
+      </div>
+      <div id="scrape-selection">
+        <button class="button" disabled>Selection</button>
+      </div>
+      <div id="scrape-kindle-highlights">
+        <button class="button" disabled>Kindle highlights</button>
+      </div>
     </div>
   </div>
 </template>
@@ -18,16 +29,29 @@ import "whatwg-fetch";
 export default {
   data() {
     return {
-      color: ""
+      scraped: false,
+      title: "",
+      url: ""
     };
   },
 
   methods: {
-    setColor() {
-      console.log("setColor");
-      chrome.storage.sync.get("color", data => {
-        this.color = data.color;
+    hello() {
+      console.log("hello");
+    },
+
+    scrapeTitle() {
+      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        this.title = tabs[0].title;
+        this.url = tabs[0].url;
+        this.scraped = true;
       });
+    },
+
+    cancel() {
+      this.title = "";
+      this.url = "";
+      this.scraped = false;
     },
 
     onClick(element) {
@@ -59,17 +83,7 @@ export default {
   },
 
   beforeMount() {
-    this.setColor();
+    this.hello();
   }
 };
 </script>
-
-<style>
-#scrape-buttons {
-  padding: 1rem;
-}
-
-button {
-  width: 200px;
-}
-</style>

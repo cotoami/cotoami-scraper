@@ -4,7 +4,7 @@
     <div id="scraped" v-else-if="scraper && scraper.scraped">
       <div id="scraped-content" v-html="scraper.html()"></div>
       <div class="buttons">
-        <button class="button" v-on:click="clear()" v-if="!posting">Cancel</button>
+        <button class="button" v-on:click="cancel()" v-if="!posting">Cancel</button>
         <button
           class="button button-primary"
           v-on:click="post()"
@@ -33,10 +33,9 @@ import PageLinkScraper from "./PageLinkScraper.js";
 export default {
   data() {
     return {
-      scraped: false,
+      scraper: null,
       posting: false,
-      posted: false,
-      scraper: null
+      posted: false
     };
   },
 
@@ -54,10 +53,8 @@ export default {
       this.scraper.scrape();
     },
 
-    clear() {
-      if (this.scraper) {
-        this.scraper.clear();
-      }
+    cancel() {
+      this.scraper = null;
     },
 
     post() {
@@ -78,7 +75,6 @@ export default {
           }
         })
       }).then(data => {
-        this.clear();
         this.posting = false;
         this.posted = true;
       });

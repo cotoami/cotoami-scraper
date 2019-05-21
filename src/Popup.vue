@@ -5,8 +5,12 @@
         <a v-bind:href="url" target="_blank">{{ title }}</a>
       </div>
       <div class="buttons">
-        <button class="button" v-on:click="cancel()">Cancel</button>
-        <button class="button button-primary">Post</button>
+        <button class="button" v-on:click="clear()" v-if="!posting">Cancel</button>
+        <button
+          class="button button-primary"
+          v-on:click="post()"
+          v-bind:disabled="posting"
+        >{{ posting ? 'Posting...' : 'Post' }}</button>
       </div>
     </div>
     <div id="scrape-buttons" v-else>
@@ -31,7 +35,8 @@ export default {
     return {
       scraped: false,
       title: "",
-      url: ""
+      url: "",
+      posting: false
     };
   },
 
@@ -48,13 +53,19 @@ export default {
       });
     },
 
-    cancel() {
+    clear() {
       this.title = "";
       this.url = "";
       this.scraped = false;
+      this.posting = false;
     },
 
-    onClick(element) {
+    createContent() {
+      return `[${this.title}](${this.url})`;
+    },
+
+    post() {
+      this.posting = true;
       fetch("http://localhost:4000/api/cotos", {
         credentials: "include",
         method: "POST",
@@ -65,19 +76,13 @@ export default {
         },
         body: JSON.stringify({
           coto: {
-            content: "Hello from Cotoami Scraper!",
+            content: this.createContent(),
             summary: null,
             cotonoma_id: null
           }
         })
-      })
-        .then(data => data.json())
-        .then(data => console.log("data", data));
-
-      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-        chrome.tabs.executeScript(tabs[0].id, {
-          code: 'document.body.style.backgroundColor = "' + this.color + '";'
-        });
+      }).then(data => {
+        this.clear();
       });
     }
   },

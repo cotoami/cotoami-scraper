@@ -1,7 +1,35 @@
 #popup {
+  padding: 1rem;
+
+  #no-session {
+    padding: 1.5rem 2rem;
+    width: 300px;
+    text-align: center;
+  }
+
+  #amishi {
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+
+    img.avatar {
+      margin: 0;
+      padding: 0;
+      width: 20px;
+      height: 20px;
+      margin-right: 4px;
+      border-radius: 4px;
+      vertical-align: middle;
+    }
+
+    span.name {
+      color: #aaa;
+      font-weight: 700;
+      padding-right: 1rem;
+    }
+  }
+
   #scrape-buttons {
-    padding: 1rem;
-  
     button {
       width: 200px;
       text-transform: none;
@@ -16,7 +44,6 @@
   }
   
   #scraped {
-    padding: 1rem;
     padding-bottom: 0;
   
     div.coto {
@@ -30,6 +57,10 @@
     div.buttons {
       margin-top: 1rem;
       text-align: right;
+
+      button {
+        margin-bottom: 0;
+      }
     }
   }
 

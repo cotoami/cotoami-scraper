@@ -12,6 +12,7 @@
         >{{ posting ? 'Posting...' : 'Post' }}</button>
       </div>
     </div>
+    <div id="scaping" v-else-if="scraper && scraper.scaping">Scaping...</div>
     <div id="scrape-buttons" v-else>
       <div id="scrape-title" v-on:click="scrape(createPageLinkScraper())">
         <button class="button">Page link</button>

@@ -1,9 +1,15 @@
 <template>
-  <button
-    id="changeColor"
-    v-on:click="onClick($event)"
-    v-bind:style="{ 'background-color': color }"
-  ></button>
+  <div id="scrape-buttons">
+    <div id="scrape-title">
+      <button>Title as Link</button>
+    </div>
+    <div id="scrape-selection">
+      <button>Selection</button>
+    </div>
+    <div id="scrape-kindle-highlights">
+      <button>Kindle highlights</button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -59,9 +65,7 @@ export default {
 </script>
 
 <style>
-button {
-  height: 30px;
-  width: 30px;
-  outline: none;
+#scrape-buttons {
+  padding: 1rem;
 }
 </style>

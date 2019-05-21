@@ -1,0 +1,29 @@
+// Lists
+//––––––––––––––––––––––––––––––––––––––––––––––––––
+
+ul, ol {
+  margin-top: 0;
+  margin-left: 3rem;
+  padding-left: 0;
+}
+
+ul {
+  list-style: circle;
+  
+  ul, ol {
+    margin-left: 3rem;
+  }
+}
+
+ol {
+  list-style: decimal;
+  
+  ol, ul {
+    margin-left: 3rem;
+  }
+}
+
+li {
+  margin-bottom: 0.5rem;
+  margin-left: 0;
+}

@@ -20,7 +20,7 @@
         <button class="button">Page link</button>
       </div>
       <div id="scrape-selection">
-        <button class="button" disabled>Selection</button>
+        <button class="button" v-bind:disabled="textSelected">Selection</button>
       </div>
       <div id="scrape-kindle-highlights">
         <button class="button" disabled>Kindle highlights</button>
@@ -37,14 +37,22 @@ export default {
   data() {
     return {
       scraper: null,
+      textSelected: false,
       posting: false,
       posted: false
     };
   },
 
   methods: {
-    hello() {
-      console.log("hello");
+    checkSelection() {
+      chrome.tabs.executeScript(
+        {
+          code: "window.getSelection().toString();"
+        },
+        ([selection]) => {
+          this.textSelected = !selection;
+        }
+      );
     },
 
     createPageLinkScraper() {
@@ -85,7 +93,7 @@ export default {
   },
 
   beforeMount() {
-    this.hello();
+    this.checkSelection();
   }
 };
 </script>

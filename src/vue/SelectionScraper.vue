@@ -1,12 +1,16 @@
 <template>
-  <div id="page-link-scraper">
+  <div id="selection-scraper">
     <div id="error" v-if="error">Something went wrong...</div>
     <div id="posted" v-else-if="posted">
       <img src="../images/done.gif"> Posted.
     </div>
     <div id="scraped" v-else-if="scraped">
       <div id="scraped-content">
-        <div class="coto">
+        <div class="coto" v-if="isMultiline()">
+          <div class="multiline-text">{{ selectedText }}</div>
+          <a v-bind:href="url" target="_blank">{{ title }}</a>
+        </div>
+        <div class="coto" v-else>
           {{ selectedText }} -
           <a v-bind:href="url" target="_blank">{{ title }}</a>
         </div>
@@ -65,8 +69,16 @@ export default {
       this.$emit("cancel");
     },
 
+    isMultiline() {
+      return this.selectedText.indexOf("\n") !== -1;
+    },
+
     markdown() {
-      return `${this.selectedText} - [${this.title}](${this.url})`;
+      if (this.isMultiline()) {
+        return `${this.selectedText} \n \n [${this.title}](${this.url})`;
+      } else {
+        return `${this.selectedText} - [${this.title}](${this.url})`;
+      }
     },
 
     post() {

@@ -59,9 +59,14 @@
       padding: 12px;
       background-color: #fff;
     }
+
+    div.multiline-text {
+      white-space: pre-wrap;
+      margin-bottom: 1rem;
+    }
   
     div.buttons {
-      margin-top: 1rem;
+      margin-top: 1.5rem;
       text-align: right;
 
       button {

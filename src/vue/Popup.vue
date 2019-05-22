@@ -16,11 +16,11 @@
           <div id="scrape-title" v-on:click="scraper = 'page-link-scraper'">
             <button class="button">Page link</button>
           </div>
-          <div id="scrape-selection">
+          <div id="scrape-selection" v-if="textSelected">
             <button
               class="button"
               v-on:click="scraper = 'selection-scraper'"
-              v-bind:disabled="textSelected"
+              v-bind:disabled="!textSelected"
             >Selection</button>
           </div>
           <div id="scrape-kindle-highlights">
@@ -80,7 +80,7 @@ export default {
           code: "window.getSelection().toString();"
         },
         ([selection]) => {
-          this.textSelected = !selection;
+          this.textSelected = selection && selection !== "";
         }
       );
     },

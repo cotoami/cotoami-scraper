@@ -1,6 +1,7 @@
 <template>
   <div id="page-link-scraper">
-    <div id="posted" v-if="posted">
+    <div id="error" v-if="error">Something went wrong...</div>
+    <div id="posted" v-else-if="posted">
       <img src="../images/done.gif"> Posted.
     </div>
     <div id="scraped" v-else-if="scraped">
@@ -23,6 +24,8 @@
 </template>
 
 <script>
+import Utils from "../js/Utils.js";
+
 export default {
   data() {
     return {
@@ -31,7 +34,8 @@ export default {
       scaping: false,
       scraped: false,
       posting: false,
-      posted: false
+      posted: false,
+      error: null
     };
   },
 
@@ -71,10 +75,16 @@ export default {
             cotonoma_id: null
           }
         })
-      }).then(data => {
-        this.posting = false;
-        this.posted = true;
-      });
+      })
+        .then(Utils.checkStatusAndParseBodyAsJson)
+        .then(json => {
+          this.posting = false;
+          this.posted = true;
+        })
+        .catch(error => {
+          console.log("request failed", error);
+          this.error = error;
+        });
     }
   },
 

@@ -34,6 +34,7 @@
 
 <script>
 import "whatwg-fetch";
+import Utils from "../js/Utils.js";
 import PageLinkScraper from "./PageLinkScraper.vue";
 
 export default {
@@ -56,21 +57,14 @@ export default {
       fetch(COTOAMI_URL + "/api/public/session", {
         credentials: "include"
       })
-        .then(response => {
-          this.loadingSession = false;
-          if (response.status >= 200 && response.status < 300) {
-            return response.json();
-          } else {
-            var error = new Error(response.statusText);
-            error.response = response;
-            throw error;
-          }
-        })
+        .then(Utils.checkStatusAndParseBodyAsJson)
         .then(json => {
           this.session = json;
+          this.loadingSession = false;
         })
         .catch(error => {
           console.log("request failed", error);
+          this.loadingSession = false;
         });
     },
 

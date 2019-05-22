@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Popup from './Popup.vue';
-import "./skeleton/skeleton.scss";
-import "./popup.scss";
+import "./css/skeleton/skeleton.scss";
+import "./css/popup.scss";
 
 new Vue({ el: '#popup', render: c => c(Popup) });
 

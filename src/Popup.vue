@@ -2,7 +2,7 @@
   <div id="popup">
     <div id="in-session" v-if="session">
       <div id="posted" v-if="posted">
-        <img src="./done.gif"> Posted.
+        <img src="./images/done.gif"> Posted.
       </div>
       <div v-else>
         <div v-if="scraper">

@@ -1,6 +1,12 @@
 #popup {
   padding: 1rem;
 
+  #loading-session {
+    width: 50px;
+    padding: 1rem 0.5rem;
+    text-align: center;
+  }
+
   #no-session {
     padding: 1.5rem 2rem;
     width: 300px;

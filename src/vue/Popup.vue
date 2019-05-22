@@ -1,6 +1,9 @@
 <template>
   <div id="popup">
-    <div id="in-session" v-if="session">
+    <div id="loading-session" v-if="loadingSession">
+      <img src="../images/loading.gif">
+    </div>
+    <div id="in-session" v-else-if="session">
       <div v-if="scraper">
         <component v-bind:is="scraper" v-on:cancel="closeScraper"></component>
       </div>
@@ -37,6 +40,7 @@ export default {
   data() {
     return {
       cotoamiUrl: COTOAMI_URL,
+      loadingSession: true,
       session: null,
       scraper: null,
       textSelected: false
@@ -53,6 +57,7 @@ export default {
         credentials: "include"
       })
         .then(response => {
+          this.loadingSession = false;
           if (response.status >= 200 && response.status < 300) {
             return response.json();
           } else {
@@ -62,7 +67,6 @@ export default {
           }
         })
         .then(json => {
-          console.log("session", json);
           this.session = json;
         })
         .catch(error => {

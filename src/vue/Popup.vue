@@ -17,7 +17,11 @@
             <button class="button">Page link</button>
           </div>
           <div id="scrape-selection">
-            <button class="button" v-bind:disabled="textSelected">Selection</button>
+            <button
+              class="button"
+              v-on:click="scraper = 'selection-scraper'"
+              v-bind:disabled="textSelected"
+            >Selection</button>
           </div>
           <div id="scrape-kindle-highlights">
             <button class="button" disabled>Kindle highlights</button>
@@ -36,6 +40,7 @@
 import "whatwg-fetch";
 import Utils from "../js/Utils.js";
 import PageLinkScraper from "./PageLinkScraper.vue";
+import SelectionScraper from "./SelectionScraper.vue";
 
 export default {
   data() {
@@ -49,7 +54,8 @@ export default {
   },
 
   components: {
-    "page-link-scraper": PageLinkScraper
+    "page-link-scraper": PageLinkScraper,
+    "selection-scraper": SelectionScraper
   },
 
   methods: {

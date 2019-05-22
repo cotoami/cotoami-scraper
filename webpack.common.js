@@ -1,7 +1,5 @@
 const path = require('path');
-const webpack = require("webpack");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-const ExtensionReloader = require('webpack-extension-reloader');
 const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
@@ -53,11 +51,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.DefinePlugin({
-      COTOAMI_URL: JSON.stringify('http://localhost:4000')
-    }),
     new VueLoaderPlugin(),
-    new ExtensionReloader(),
     new CopyPlugin([
       { from: 'static' }
     ])

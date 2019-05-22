@@ -7,7 +7,7 @@
     <div id="scraped" v-else-if="scraped">
       <div id="scraped-content">
         <div class="coto">
-          <div class="multiline-text" v-html="selectedHtml"></div>
+          <div class="selected-html" v-html="selectedHtml"></div>
           <a v-bind:href="url" target="_blank">{{ title }}</a>
         </div>
       </div>

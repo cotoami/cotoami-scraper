@@ -1,7 +1,7 @@
 <template>
   <div id="page-link-scraper">
     <div id="posted" v-if="posted">
-      <img src="./images/done.gif"> Posted.
+      <img src="../images/done.gif"> Posted.
     </div>
     <div id="scraped" v-else-if="scraped">
       <div id="scraped-content">

@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import Popup from './Popup.vue';
+import Popup from './vue/Popup.vue';
 import "./css/skeleton/skeleton.scss";
 import "./css/popup.scss";
 

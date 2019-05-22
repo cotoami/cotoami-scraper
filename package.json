@@ -36,6 +36,7 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
+    "turndown": "^5.0.3",
     "vue": "^2.6.10",
     "whatwg-fetch": "^3.0.0"
   }

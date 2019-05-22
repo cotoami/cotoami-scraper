@@ -6,12 +6,8 @@
     </div>
     <div id="scraped" v-else-if="scraped">
       <div id="scraped-content">
-        <div class="coto" v-if="isMultiline()">
-          <div class="multiline-text">{{ selectedText }}</div>
-          <a v-bind:href="url" target="_blank">{{ title }}</a>
-        </div>
-        <div class="coto" v-else>
-          {{ selectedText }} -
+        <div class="coto">
+          <div class="multiline-text" v-html="selectedHtml"></div>
           <a v-bind:href="url" target="_blank">{{ title }}</a>
         </div>
       </div>
@@ -30,13 +26,16 @@
 
 <script>
 import Utils from "../js/Utils.js";
+import Turndown from "turndown";
+
+const _turndown = new Turndown();
 
 export default {
   data() {
     return {
       title: "",
       url: "",
-      selectedText: "",
+      selectedHtml: "",
       scaping: false,
       scraped: false,
       posting: false,
@@ -54,12 +53,18 @@ export default {
         chrome.tabs.executeScript(
           tabs[0].id,
           {
-            code: "window.getSelection().toString();"
+            code: `
+              var fragment = window.getSelection().getRangeAt(0).cloneContents();
+              var div = document.createElement('div');
+              div.appendChild(fragment.cloneNode(true));
+              div.innerHTML;
+            `
           },
           ([selection]) => {
-            this.selectedText = selection;
+            this.selectedHtml = selection;
             this.scraped = true;
             this.scaping = false;
+            console.log("markdown", this.markdown());
           }
         );
       });
@@ -69,16 +74,9 @@ export default {
       this.$emit("cancel");
     },
 
-    isMultiline() {
-      return this.selectedText.indexOf("\n") !== -1;
-    },
-
     markdown() {
-      if (this.isMultiline()) {
-        return `${this.selectedText} \n \n [${this.title}](${this.url})`;
-      } else {
-        return `${this.selectedText} - [${this.title}](${this.url})`;
-      }
+      const selectionAsMarkdown = _turndown.turndown(this.selectedHtml);
+      return `${selectionAsMarkdown} \n \n [${this.title}](${this.url})`;
     },
 
     post() {

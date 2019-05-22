@@ -60,29 +60,12 @@ export default {
 
     post() {
       this.posting = true;
-      fetch(COTOAMI_URL + "/api/cotos", {
-        credentials: "include",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Requested-With": "XMLHttpRequest",
-          "X-Cotoami-Client-Id": "dummy"
-        },
-        body: JSON.stringify({
-          coto: {
-            content: this.markdown(),
-            summary: null,
-            cotonoma_id: null
-          }
-        })
-      })
-        .then(Utils.checkStatusAndParseBodyAsJson)
+      Utils.postCoto(this.markdown(), null)
         .then(json => {
           this.posting = false;
           this.posted = true;
         })
         .catch(error => {
-          console.log("request failed", error);
           this.error = error;
         });
     }

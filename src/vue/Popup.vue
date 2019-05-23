@@ -16,7 +16,7 @@
           <div id="scrape-title" v-on:click="scraper = 'page-link-scraper'">
             <button class="button">Page link</button>
           </div>
-          <div id="scrape-selection" v-if="textSelected">
+          <div id="scrape-selection">
             <button
               class="button"
               v-on:click="scraper = 'selection-scraper'"

@@ -13,8 +13,8 @@
           <span class="name">{{session.amishi.display_name}}</span>
         </div>
         <div id="scrape-buttons">
-          <div id="scrape-title" v-on:click="scraper = 'page-link-scraper'">
-            <button class="button">Page link</button>
+          <div id="scrape-title">
+            <button class="button" v-on:click="scraper = 'page-link-scraper'">Page link</button>
           </div>
           <div id="scrape-selection">
             <button
@@ -24,7 +24,11 @@
             >Selection</button>
           </div>
           <div id="scrape-kindle-highlights">
-            <button class="button" v-bind:disabled="!inKindleHighlights()">Kindle highlights</button>
+            <button
+              class="button"
+              v-on:click="scraper = 'kindle-highlights-scraper'"
+              v-bind:disabled="!inKindleHighlights()"
+            >Kindle highlights</button>
           </div>
         </div>
       </div>
@@ -41,6 +45,7 @@ import "whatwg-fetch";
 import Utils from "../js/Utils.js";
 import PageLinkScraper from "./PageLinkScraper.vue";
 import SelectionScraper from "./SelectionScraper.vue";
+import KindleHighlightsScraper from "./KindleHighlightsScraper.vue";
 
 export default {
   data() {
@@ -56,7 +61,8 @@ export default {
 
   components: {
     "page-link-scraper": PageLinkScraper,
-    "selection-scraper": SelectionScraper
+    "selection-scraper": SelectionScraper,
+    "kindle-highlights-scraper": KindleHighlightsScraper
   },
 
   methods: {

@@ -6,9 +6,7 @@
     </div>
     <div id="scraped" v-else-if="scraped">
       <div id="scraped-content">
-        <div class="coto">
-          <a v-bind:href="url" target="_blank">{{ title }}</a>
-        </div>
+        <div class="coto">{{ asin }}</div>
       </div>
       <div class="buttons">
         <button class="button" v-on:click="cancel()" v-if="!posting">Cancel</button>
@@ -26,11 +24,14 @@
 <script>
 import Utils from "../js/Utils.js";
 
+const _codeToScrapeAsin = `
+  document.getElementById('kp-notebook-annotations-asin').getAttribute('value');
+`;
+
 export default {
   data() {
     return {
-      title: "",
-      url: "",
+      asin: "",
       scaping: false,
       scraped: false,
       posting: false,
@@ -43,10 +44,15 @@ export default {
     scrape() {
       this.scaping = true;
       chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-        this.title = tabs[0].title;
-        this.url = tabs[0].url;
-        this.scraped = true;
-        this.scaping = false;
+        chrome.tabs.executeScript(
+          tabs[0].id,
+          { code: _codeToScrapeAsin },
+          ([asin]) => {
+            this.asin = asin;
+            this.scraped = true;
+            this.scaping = false;
+          }
+        );
       });
     },
 
@@ -55,7 +61,7 @@ export default {
     },
 
     markdown() {
-      return `[${this.title}](${this.url})`;
+      return this.asin;
     },
 
     post() {

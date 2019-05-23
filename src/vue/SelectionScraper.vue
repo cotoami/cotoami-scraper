@@ -31,6 +31,22 @@ import Utils from "../js/Utils.js";
 import Turndown from "turndown";
 import Url from "url";
 
+const _turndown = new Turndown();
+_turndown.addRule("preWithoutCode", {
+  filter: function(node, options) {
+    return (
+      node.nodeName === "PRE" &&
+      (!node.firstChild || node.firstChild.nodeName !== "CODE")
+    );
+  },
+  replacement: function(content, node, options) {
+    const unescapedContent = content
+      .replace(/\\\\/g, "\\")
+      .replace(/([^\\])\\([^\\])/g, "$1$2");
+    return "\n\n    " + unescapedContent.replace(/\n/g, "\n    ") + "\n\n";
+  }
+});
+
 export default {
   data() {
     return {
@@ -102,8 +118,7 @@ export default {
     },
 
     markdown() {
-      const turndown = new Turndown();
-      const selectionAsMarkdown = turndown.turndown(this.selectedHtml);
+      const selectionAsMarkdown = _turndown.turndown(this.selectedHtml);
       return `${selectionAsMarkdown} \n \n [${this.title}](${this.url})`;
     },
 

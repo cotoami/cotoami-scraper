@@ -64,7 +64,6 @@ export default {
             this.selectedHtml = selection;
             this.scraped = true;
             this.scaping = false;
-            console.log("markdown", this.markdown());
           }
         );
       });

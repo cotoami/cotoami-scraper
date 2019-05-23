@@ -27,8 +27,7 @@
 <script>
 import Utils from "../js/Utils.js";
 import Turndown from "turndown";
-
-const _turndown = new Turndown();
+import url from "url";
 
 export default {
   data() {
@@ -75,7 +74,19 @@ export default {
     },
 
     markdown() {
-      const selectionAsMarkdown = _turndown.turndown(this.selectedHtml);
+      const turndown = new Turndown();
+      turndown.addRule("relativelink", {
+        filter: (node, options) => {
+          const href = node.getAttribute("href");
+          return node.nodeName === "A" && href && !Utils.isAbsoluteUrl(href);
+        },
+        replacement: (content, node) => {
+          const href = node.getAttribute("href");
+          const absoluteUrl = url.resolve(this.url, href);
+          return `[${content}](${absoluteUrl})`;
+        }
+      });
+      const selectionAsMarkdown = turndown.turndown(this.selectedHtml);
       return `${selectionAsMarkdown} \n \n [${this.title}](${this.url})`;
     },
 

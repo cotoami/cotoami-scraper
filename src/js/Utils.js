@@ -1,6 +1,10 @@
 import "whatwg-fetch";
 
 export default class {
+  static isAbsoluteUrl(url) {
+    return /^[a-z][a-z\d+.-]*:/.test(url);
+  }
+
   static checkStatusAndParseBodyAsJson(response) {
     if (response.status >= 200 && response.status < 300) {
       return response.json();

@@ -36,6 +36,7 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
+    "lodash": "^4.17.11",
     "turndown": "^5.0.3",
     "url": "^0.11.0",
     "vue": "^2.6.10",

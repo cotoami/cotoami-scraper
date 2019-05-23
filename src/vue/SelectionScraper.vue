@@ -25,9 +25,10 @@
 </template>
 
 <script>
+import _ from "lodash";
 import Utils from "../js/Utils.js";
 import Turndown from "turndown";
-import url from "url";
+import Url from "url";
 
 export default {
   data() {
@@ -78,16 +79,25 @@ export default {
       turndown.addRule("relativelink", {
         filter: (node, options) => {
           const href = node.getAttribute("href");
-          return node.nodeName === "A" && href && !Utils.isAbsoluteUrl(href);
+          return node.nodeName === "A" && href;
         },
         replacement: (content, node) => {
-          const href = node.getAttribute("href");
-          const absoluteUrl = url.resolve(this.url, href);
-          return `[${content}](${absoluteUrl})`;
+          let href = this.processUrl(node.getAttribute("href"));
+          return `[${content}](${href})`;
         }
       });
       const selectionAsMarkdown = turndown.turndown(this.selectedHtml);
       return `${selectionAsMarkdown} \n \n [${this.title}](${this.url})`;
+    },
+
+    processUrl(rawUrl) {
+      let url = rawUrl;
+      if (!Utils.isAbsoluteUrl(url)) {
+        url = Url.resolve(this.url, url);
+      }
+      url = _.replace(url, "(", "%28");
+      url = _.replace(url, ")", "%29");
+      return url;
     },
 
     post() {

@@ -60,16 +60,7 @@ export default {
           { code: _codeToScrapeBasicInfo },
           ([[asin, deviceType]]) => {
             if (asin) {
-              const url = _initialHighlightsUrl(hostname, deviceType, asin);
-              fetch(url, { credentials: "include" })
-                .then(Utils.checkStatusAndGetTextBody.bind(Utils))
-                .then(html => {
-                  console.log("html", html);
-                  const $ = cheerio.load(html);
-                  this.title = $("h3.kp-notebook-metadata").text();
-                  this.scraped = true;
-                  this.scaping = false;
-                });
+              this.doScrape(hostname, deviceType, asin);
             } else {
               this.scraped = true;
               this.scaping = false;
@@ -78,6 +69,26 @@ export default {
           }
         );
       });
+    },
+
+    doScrape(hostname, deviceType, asin) {
+      const url = _initialHighlightsUrl(hostname, deviceType, asin);
+      fetch(url, { credentials: "include" })
+        .then(Utils.checkStatusAndGetTextBody.bind(Utils))
+        .then(html => {
+          console.log("html", html);
+          const $ = cheerio.load(html);
+          this.title = $("h3.kp-notebook-metadata").text();
+          const contentLimitState = $(
+            "input.kp-notebook-content-limit-state"
+          ).attr("value");
+          const nextPageStartToken = $(
+            "input.kp-notebook-annotations-next-page-start"
+          ).attr("value");
+          console.log("doScrape", [contentLimitState, nextPageStartToken]);
+          this.scraped = true;
+          this.scaping = false;
+        });
     },
 
     cancel() {

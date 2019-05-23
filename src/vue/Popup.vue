@@ -96,8 +96,8 @@ export default {
         {
           code: "window.getSelection().toString();"
         },
-        ([selection]) => {
-          this.textSelected = selection && selection !== "";
+        selection => {
+          this.textSelected = selection && selection[0] !== "";
         }
       );
     },

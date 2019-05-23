@@ -26,6 +26,7 @@
 
 <script>
 import _ from "lodash";
+import $ from "jquery";
 import Utils from "../js/Utils.js";
 import Turndown from "turndown";
 import Url from "url";
@@ -61,7 +62,7 @@ export default {
             `
           },
           ([selection]) => {
-            this.selectedHtml = selection;
+            this.selectedHtml = this.processHtml(selection);
             this.scraped = true;
             this.scaping = false;
           }
@@ -69,33 +70,21 @@ export default {
       });
     },
 
-    cancel() {
-      this.$emit("cancel");
-    },
-
-    markdown() {
-      const turndown = new Turndown();
-      turndown.addRule("href", {
-        filter: (node, options) => {
-          return node.nodeName === "A" && node.getAttribute("href");
-        },
-        replacement: (content, node) => {
-          const href = this.processUrl(node.getAttribute("href"));
-          return `[${content}](${href})`;
-        }
+    processHtml(html) {
+      const outer = this;
+      const tree = $(`<div>${html}</div>`);
+      tree.find("a[href]").replaceWith(function() {
+        const href = outer.processUrl(this.getAttribute("href"));
+        this.setAttribute("href", href);
+        this.setAttribute("target", "_blank");
+        return this;
       });
-      turndown.addRule("src", {
-        filter: (node, options) => {
-          return node.nodeName === "IMG" && node.getAttribute("src");
-        },
-        replacement: (content, node) => {
-          const src = this.processUrl(node.getAttribute("src"));
-          const alt = node.getAttribute("alt") || src;
-          return `![${alt}](${src})`;
-        }
+      tree.find("img[src]").replaceWith(function() {
+        const src = outer.processUrl(this.getAttribute("src"));
+        this.setAttribute("src", src);
+        return this;
       });
-      const selectionAsMarkdown = turndown.turndown(this.selectedHtml);
-      return `${selectionAsMarkdown} \n \n [${this.title}](${this.url})`;
+      return tree.html();
     },
 
     processUrl(rawUrl) {
@@ -106,6 +95,16 @@ export default {
       url = _.replace(url, "(", "%28");
       url = _.replace(url, ")", "%29");
       return url;
+    },
+
+    cancel() {
+      this.$emit("cancel");
+    },
+
+    markdown() {
+      const turndown = new Turndown();
+      const selectionAsMarkdown = turndown.turndown(this.selectedHtml);
+      return `${selectionAsMarkdown} \n \n [${this.title}](${this.url})`;
     },
 
     post() {

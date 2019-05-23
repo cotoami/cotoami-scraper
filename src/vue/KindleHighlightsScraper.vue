@@ -6,7 +6,7 @@
     </div>
     <div id="scraped" v-else-if="scraped">
       <div id="scraped-content">
-        <div class="coto">{{ asin }}</div>
+        <div class="coto">{{ title }}</div>
       </div>
       <div class="buttons">
         <button class="button" v-on:click="cancel()" v-if="!posting">Cancel</button>
@@ -17,12 +17,16 @@
         >{{ posting ? 'Posting...' : 'Post' }}</button>
       </div>
     </div>
-    <div id="scaping" v-else-if="scaping">Scaping...</div>
+    <div id="scaping" v-else-if="scaping">
+      <img src="../images/loading.gif">
+      Scaping...
+    </div>
   </div>
 </template>
 
 <script>
 import "whatwg-fetch";
+import cheerio from "cheerio";
 import Utils from "../js/Utils.js";
 
 const _codeToScrapeBasicInfo = `
@@ -37,8 +41,7 @@ const _initialHighlightsUrl = (hostname, deviceType, asin) =>
 export default {
   data() {
     return {
-      hostname: "",
-      asin: null,
+      title: "",
       scaping: false,
       scraped: false,
       posting: false,
@@ -51,26 +54,22 @@ export default {
     scrape() {
       this.scaping = true;
       chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-        this.hostname = new URL(tabs[0].url).hostname;
+        const hostname = new URL(tabs[0].url).hostname;
         chrome.tabs.executeScript(
           tabs[0].id,
           { code: _codeToScrapeBasicInfo },
           ([[asin, deviceType]]) => {
-            console.log("deviceType", deviceType);
-            this.asin = asin;
-            if (this.asin) {
-              const url = _initialHighlightsUrl(
-                this.hostname,
-                deviceType,
-                this.asin
-              );
+            if (asin) {
+              const url = _initialHighlightsUrl(hostname, deviceType, asin);
               fetch(url, { credentials: "include" })
                 .then(Utils.checkStatusAndGetTextBody.bind(Utils))
                 .then(html => {
                   console.log("html", html);
+                  const $ = cheerio.load(html);
+                  this.title = $("h3.kp-notebook-metadata").text();
+                  this.scraped = true;
+                  this.scaping = false;
                 });
-              this.scraped = true;
-              this.scaping = false;
             } else {
               this.scraped = true;
               this.scaping = false;

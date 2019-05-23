@@ -36,6 +36,7 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
     "jquery": "^3.4.1",
     "lodash": "^4.17.11",
     "turndown": "^5.0.3",

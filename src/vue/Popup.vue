@@ -80,7 +80,7 @@ export default {
       fetch(COTOAMI_URL + "/api/public/session", {
         credentials: "include"
       })
-        .then(Utils.checkStatusAndParseBodyAsJson)
+        .then(Utils.checkStatusAndParseBodyAsJson.bind(Utils))
         .then(json => {
           this.session = json;
           this.loadingSession = false;

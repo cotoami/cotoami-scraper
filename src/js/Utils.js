@@ -1,5 +1,11 @@
 import "whatwg-fetch";
 
+const _throwStatusError = response => {
+  var error = new Error(response.statusText);
+  error.response = response;
+  throw error;
+}
+
 export default class {
   static isAbsoluteUrl(url) {
     return /^[a-z][a-z\d+.-]*:/.test(url);
@@ -9,9 +15,15 @@ export default class {
     if (response.status >= 200 && response.status < 300) {
       return response.json();
     } else {
-      var error = new Error(response.statusText);
-      error.response = response;
-      throw error;
+      _throwStatusError(response);
+    }
+  }
+
+  static checkStatusAndGetTextBody(response) {
+    if (response.status >= 200 && response.status < 300) {
+      return response.text();
+    } else {
+      _throwStatusError(response);
     }
   }
 
@@ -32,6 +44,6 @@ export default class {
         }
       })
     })
-      .then(this.checkStatusAndParseBodyAsJson)
+      .then(this.checkStatusAndParseBodyAsJson.bind(this))
   }
 }

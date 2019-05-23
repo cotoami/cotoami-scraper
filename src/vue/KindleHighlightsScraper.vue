@@ -22,15 +22,22 @@
 </template>
 
 <script>
+import "whatwg-fetch";
 import Utils from "../js/Utils.js";
 
-const _codeToScrapeAsin = `
-  document.getElementById('kp-notebook-annotations-asin').getAttribute('value');
+const _codeToScrapeBasicInfo = `
+  var asin = document.getElementById('kp-notebook-annotations-asin').getAttribute('value');
+  var deviceType = window.KindleGlobal ? window.KindleGlobal.amazonDeviceType : 'A2CLFWBIMVSE9N';
+  [asin, deviceType]
 `;
+
+const _initialHighlightsUrl = (hostname, deviceType, asin) =>
+  `https://${hostname}/kp/notebook?purpose=NOTEBOOK&amazonDeviceType=${deviceType}&appName=notebook&asin=${asin}&contentLimitState=&`;
 
 export default {
   data() {
     return {
+      hostname: "",
       asin: null,
       scaping: false,
       scraped: false,
@@ -44,12 +51,24 @@ export default {
     scrape() {
       this.scaping = true;
       chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        this.hostname = new URL(tabs[0].url).hostname;
         chrome.tabs.executeScript(
           tabs[0].id,
-          { code: _codeToScrapeAsin },
-          ([asin]) => {
+          { code: _codeToScrapeBasicInfo },
+          ([[asin, deviceType]]) => {
+            console.log("deviceType", deviceType);
             this.asin = asin;
             if (this.asin) {
+              const url = _initialHighlightsUrl(
+                this.hostname,
+                deviceType,
+                this.asin
+              );
+              fetch(url, { credentials: "include" })
+                .then(Utils.checkStatusAndGetTextBody.bind(Utils))
+                .then(html => {
+                  console.log("html", html);
+                });
               this.scraped = true;
               this.scaping = false;
             } else {

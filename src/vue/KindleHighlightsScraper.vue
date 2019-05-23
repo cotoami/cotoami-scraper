@@ -1,6 +1,6 @@
 <template>
   <div id="kindle-highlights-scraper">
-    <div id="error" v-if="error">Something went wrong...</div>
+    <div id="error" v-if="error">Error: {{ error }}</div>
     <div id="posted" v-else-if="posted">
       <img src="../images/done.gif"> Posted.
     </div>
@@ -31,7 +31,7 @@ const _codeToScrapeAsin = `
 export default {
   data() {
     return {
-      asin: "",
+      asin: null,
       scaping: false,
       scraped: false,
       posting: false,
@@ -49,8 +49,14 @@ export default {
           { code: _codeToScrapeAsin },
           ([asin]) => {
             this.asin = asin;
-            this.scraped = true;
-            this.scaping = false;
+            if (this.asin) {
+              this.scraped = true;
+              this.scaping = false;
+            } else {
+              this.scraped = true;
+              this.scaping = false;
+              this.error = "Couldn't get the ASIN.";
+            }
           }
         );
       });

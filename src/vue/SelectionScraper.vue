@@ -76,14 +76,23 @@ export default {
 
     markdown() {
       const turndown = new Turndown();
-      turndown.addRule("relativelink", {
+      turndown.addRule("href", {
         filter: (node, options) => {
-          const href = node.getAttribute("href");
-          return node.nodeName === "A" && href;
+          return node.nodeName === "A" && node.getAttribute("href");
         },
         replacement: (content, node) => {
-          let href = this.processUrl(node.getAttribute("href"));
+          const href = this.processUrl(node.getAttribute("href"));
           return `[${content}](${href})`;
+        }
+      });
+      turndown.addRule("src", {
+        filter: (node, options) => {
+          return node.nodeName === "IMG" && node.getAttribute("src");
+        },
+        replacement: (content, node) => {
+          const src = this.processUrl(node.getAttribute("src"));
+          const alt = node.getAttribute("alt") || src;
+          return `![${alt}](${src})`;
         }
       });
       const selectionAsMarkdown = turndown.turndown(this.selectedHtml);

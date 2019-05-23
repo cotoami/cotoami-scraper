@@ -5,6 +5,7 @@ const ReplaceInFileWebpackPlugin = require('replace-in-file-webpack-plugin');
 
 module.exports = merge(common, {
   mode: 'production',
+  devtool: 'source-map',
   plugins: [
     new webpack.DefinePlugin({
       COTOAMI_URL: JSON.stringify('https://cotoa.me')

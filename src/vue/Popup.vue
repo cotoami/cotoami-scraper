@@ -24,7 +24,7 @@
             >Selection</button>
           </div>
           <div id="scrape-kindle-highlights">
-            <button class="button" disabled>Kindle highlights</button>
+            <button class="button" v-bind:disabled="!inKindleHighlights()">Kindle highlights</button>
           </div>
         </div>
       </div>
@@ -46,6 +46,7 @@ export default {
   data() {
     return {
       cotoamiUrl: COTOAMI_URL,
+      url: "",
       loadingSession: true,
       session: null,
       scraper: null,
@@ -59,6 +60,16 @@ export default {
   },
 
   methods: {
+    getUrl() {
+      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        this.url = tabs[0].url;
+      });
+    },
+
+    inKindleHighlights() {
+      return new URL(this.url).hostname.indexOf("read.amazon.") === 0;
+    },
+
     fetchSession() {
       fetch(COTOAMI_URL + "/api/public/session", {
         credentials: "include"
@@ -91,6 +102,7 @@ export default {
   },
 
   beforeMount() {
+    this.getUrl();
     this.fetchSession();
     this.checkSelection();
   }

@@ -188,8 +188,6 @@ export default {
       }
     },
 
-    cotonomaName() {},
-
     cancel() {
       this.$emit("cancel");
     },

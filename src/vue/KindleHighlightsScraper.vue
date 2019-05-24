@@ -38,6 +38,22 @@ const _codeToScrapeBasicInfo = `
 const _initialHighlightsUrl = (hostname, deviceType, asin) =>
   `https://${hostname}/kp/notebook?purpose=NOTEBOOK&amazonDeviceType=${deviceType}&appName=notebook&asin=${asin}&contentLimitState=&`;
 
+const _scrapeAnnotations = ($, annotationDivs) => {
+  $(annotationDivs).each(function(index, element) {
+    const note = $(this)
+      .find("span#note")
+      .text();
+    const highlight = $(this)
+      .find("span#highlight")
+      .text();
+    const location = $(this)
+      .find("input#kp-annotation-location")
+      .val();
+    const annotation = { note: note, highlight: highlight, location: location };
+    console.log("annotation", annotation);
+  });
+};
+
 export default {
   data() {
     return {
@@ -81,11 +97,12 @@ export default {
           this.title = $("h3.kp-notebook-metadata").text();
           const contentLimitState = $(
             "input.kp-notebook-content-limit-state"
-          ).attr("value");
+          ).val();
           const nextPageStartToken = $(
             "input.kp-notebook-annotations-next-page-start"
-          ).attr("value");
+          ).val();
           console.log("doScrape", [contentLimitState, nextPageStartToken]);
+          _scrapeAnnotations($, $("#kp-notebook-annotations > div"));
           this.scraped = true;
           this.scaping = false;
         });

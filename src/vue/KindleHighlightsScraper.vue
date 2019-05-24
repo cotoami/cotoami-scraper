@@ -55,7 +55,7 @@ const _scrapeAnnotations = ($, annotationDivs) => {
     if (location) {
       annotations.push({
         note: note && note !== "" ? note : null,
-        highlight: highlight,
+        highlight: highlight && highlight !== "" ? highlight : null,
         location: location
       });
     }

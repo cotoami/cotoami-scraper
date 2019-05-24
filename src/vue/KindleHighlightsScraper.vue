@@ -26,6 +26,7 @@
 
 <script>
 import "whatwg-fetch";
+import _ from "lodash";
 import cheerio from "cheerio";
 import Utils from "../js/Utils.js";
 
@@ -71,6 +72,11 @@ const _scrapeAnnotations = ($, annotationDivs) => {
     }
   });
   return annotations;
+};
+
+const _finishScrapedAnnotations = annotations => {
+  annotations = _.filter(annotations, a => !_.isNil(a.location));
+  return _.uniqWith(annotations, _.isEqual);
 };
 
 export default {
@@ -161,7 +167,7 @@ export default {
             );
           });
       } else {
-        this.annotations = annotations;
+        this.annotations = _finishScrapedAnnotations(annotations);
         this.scraped = true;
         this.scaping = false;
         console.log("this.annotations", this.annotations);

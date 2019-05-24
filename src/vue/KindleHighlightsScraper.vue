@@ -39,19 +39,30 @@ const _initialHighlightsUrl = (hostname, deviceType, asin) =>
   `https://${hostname}/kp/notebook?purpose=NOTEBOOK&amazonDeviceType=${deviceType}&appName=notebook&asin=${asin}&contentLimitState=&`;
 
 const _scrapeAnnotations = ($, annotationDivs) => {
+  let annotations = [];
   $(annotationDivs).each(function(index, element) {
     const note = $(this)
       .find("span#note")
-      .text();
+      .text()
+      .trim();
     const highlight = $(this)
       .find("span#highlight")
-      .text();
+      .text()
+      .trim();
     const location = $(this)
       .find("input#kp-annotation-location")
       .val();
-    const annotation = { note: note, highlight: highlight, location: location };
-    console.log("annotation", annotation);
+    if (location) {
+      annotations.push({
+        note: note,
+        highlight: highlight,
+        location: location
+      });
+    }
   });
+  console.log("annotations length", annotations.length);
+  console.log("annotations", annotations);
+  return annotations;
 };
 
 export default {

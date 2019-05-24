@@ -85,6 +85,26 @@
     width: 200px;
     text-align: center;
   }
+
+  #kindle-highlights-scraper #scraped-content {
+    width: 500px;
+    padding: 0.5rem;
+
+    input {
+      margin-bottom: 0;
+    }
+
+    div.message {
+      padding-bottom: 3px;
+
+      span.count {
+        font-weight: bold;
+        font-size: 1.8rem;
+        vertical-align: -2px;
+        margin-right: 2px;
+      }
+    }
+  }
 }
 
 

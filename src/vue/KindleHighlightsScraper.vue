@@ -6,7 +6,13 @@
     </div>
     <div id="scraped" v-else-if="scraped">
       <div id="scraped-content">
-        <div class="coto">{{ title }}</div>
+        <div class="message">
+          <span class="count">{{ annotations.length }}</span> highlights will be posted to:
+        </div>
+        <div class="cotonoma-to-post">
+          <input type="text" class="cotonoma u-full-width" v-bind:value="title">
+        </div>
+        <div class="highlights"></div>
       </div>
       <div class="buttons">
         <button class="button" v-on:click="cancel()" v-if="!posting">Cancel</button>
@@ -170,6 +176,7 @@ export default {
         this.annotations = _finishScrapedAnnotations(annotations);
         this.scraped = true;
         this.scaping = false;
+        console.log("this.asin", this.asin);
         console.log("this.annotations", this.annotations);
       }
     },

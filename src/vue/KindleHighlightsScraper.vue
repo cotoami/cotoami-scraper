@@ -9,10 +9,15 @@
         <div class="message">
           <span class="count">{{ annotations.length }}</span> highlights will be posted to:
         </div>
-        <div class="cotonoma-to-post">
-          <input type="text" class="cotonoma u-full-width" v-bind:value="title">
+        <div class="cotonoma">
+          <input
+            type="text"
+            class="cotonoma-name u-full-width"
+            placeholder="Cotonoma name"
+            maxlength="50"
+            v-model="cotonomaName"
+          >
         </div>
-        <div class="highlights"></div>
       </div>
       <div class="buttons">
         <button class="button" v-on:click="cancel()" v-if="!posting">Cancel</button>
@@ -92,6 +97,7 @@ export default {
       deviceType: null,
       asin: null,
       title: "",
+      cotonomaName: "",
       annotations: null,
       scaping: false,
       scraped: false,
@@ -135,6 +141,7 @@ export default {
         .then(html => {
           const $ = cheerio.load(html);
           this.title = $("h3.kp-notebook-metadata").text();
+          this.cotonomaName = _.truncate(this.title, { length: 50 });
           const [contentLimitState, nextPageStartToken] = _scrapePageInfo($);
           const annotations = _scrapeAnnotations(
             $,
@@ -180,6 +187,8 @@ export default {
         console.log("this.annotations", this.annotations);
       }
     },
+
+    cotonomaName() {},
 
     cancel() {
       this.$emit("cancel");

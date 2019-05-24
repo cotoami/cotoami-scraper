@@ -68,6 +68,9 @@ const _scrapeAnnotations = ($, annotationDivs) => {
 export default {
   data() {
     return {
+      hostname: null,
+      deviceType: null,
+      asin: null,
       title: "",
       scaping: false,
       scraped: false,
@@ -81,13 +84,15 @@ export default {
     scrape() {
       this.scaping = true;
       chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-        const hostname = new URL(tabs[0].url).hostname;
+        this.hostname = new URL(tabs[0].url).hostname;
         chrome.tabs.executeScript(
           tabs[0].id,
           { code: _codeToScrapeBasicInfo },
           ([[asin, deviceType]]) => {
             if (asin) {
-              this.doScrape(hostname, deviceType, asin);
+              this.asin = asin;
+              this.deviceType = deviceType;
+              this.doScrape();
             } else {
               this.scraped = true;
               this.scaping = false;
@@ -98,8 +103,12 @@ export default {
       });
     },
 
-    doScrape(hostname, deviceType, asin) {
-      const url = _initialHighlightsUrl(hostname, deviceType, asin);
+    doScrape() {
+      const url = _initialHighlightsUrl(
+        this.hostname,
+        this.deviceType,
+        this.asin
+      );
       fetch(url, { credentials: "include" })
         .then(Utils.checkStatusAndGetTextBody.bind(Utils))
         .then(html => {
@@ -118,6 +127,8 @@ export default {
           this.scaping = false;
         });
     },
+
+    scrapeNextPage(annotations) {},
 
     cancel() {
       this.$emit("cancel");

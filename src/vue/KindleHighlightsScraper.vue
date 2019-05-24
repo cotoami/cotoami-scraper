@@ -38,6 +38,16 @@ const _codeToScrapeBasicInfo = `
 const _initialHighlightsUrl = (hostname, deviceType, asin) =>
   `https://${hostname}/kp/notebook?purpose=NOTEBOOK&amazonDeviceType=${deviceType}&appName=notebook&asin=${asin}&contentLimitState=&`;
 
+const _nextHighlightsUrl = (hostname, asin, limitState, token, index) =>
+  `https://${hostname}/kp/notebook?asin=${asin}&contentLimitState=${limitState}&token=${token}&index=${index}`;
+
+const _scrapePageInfo = $ => {
+  return [
+    $("input.kp-notebook-content-limit-state").val(),
+    $("input.kp-notebook-annotations-next-page-start").val()
+  ];
+};
+
 const _scrapeAnnotations = ($, annotationDivs) => {
   let annotations = [];
   $(annotationDivs).each(function(index, element) {
@@ -60,8 +70,6 @@ const _scrapeAnnotations = ($, annotationDivs) => {
       });
     }
   });
-  console.log("annotations length", annotations.length);
-  console.log("annotations", annotations);
   return annotations;
 };
 
@@ -72,6 +80,7 @@ export default {
       deviceType: null,
       asin: null,
       title: "",
+      annotations: null,
       scaping: false,
       scraped: false,
       posting: false,
@@ -112,23 +121,52 @@ export default {
       fetch(url, { credentials: "include" })
         .then(Utils.checkStatusAndGetTextBody.bind(Utils))
         .then(html => {
-          console.log("html", html);
           const $ = cheerio.load(html);
           this.title = $("h3.kp-notebook-metadata").text();
-          const contentLimitState = $(
-            "input.kp-notebook-content-limit-state"
-          ).val();
-          const nextPageStartToken = $(
-            "input.kp-notebook-annotations-next-page-start"
-          ).val();
-          console.log("doScrape", [contentLimitState, nextPageStartToken]);
-          _scrapeAnnotations($, $("#kp-notebook-annotations > div"));
-          this.scraped = true;
-          this.scaping = false;
+          const [contentLimitState, nextPageStartToken] = _scrapePageInfo($);
+          const annotations = _scrapeAnnotations(
+            $,
+            $("#kp-notebook-annotations > div")
+          );
+          this.scrapeNextPage(
+            contentLimitState,
+            nextPageStartToken,
+            annotations
+          );
         });
     },
 
-    scrapeNextPage(annotations) {},
+    scrapeNextPage(contentLimitState, nextPageStartToken, annotations) {
+      if (nextPageStartToken) {
+        const url = _nextHighlightsUrl(
+          this.hostname,
+          this.asin,
+          contentLimitState,
+          nextPageStartToken,
+          annotations.length
+        );
+        fetch(url, { credentials: "include" })
+          .then(Utils.checkStatusAndGetTextBody.bind(Utils))
+          .then(html => {
+            const $ = cheerio.load(html);
+            const [contentLimitState, nextPageStartToken] = _scrapePageInfo($);
+            const nextAnnotations = _scrapeAnnotations(
+              $,
+              $("div.a-row.a-spacing-base")
+            );
+            this.scrapeNextPage(
+              contentLimitState,
+              nextPageStartToken,
+              annotations.concat(nextAnnotations)
+            );
+          });
+      } else {
+        this.annotations = annotations;
+        this.scraped = true;
+        this.scaping = false;
+        console.log("this.annotations", this.annotations);
+      }
+    },
 
     cancel() {
       this.$emit("cancel");

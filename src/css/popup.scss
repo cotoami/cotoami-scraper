@@ -104,6 +104,31 @@
         margin-right: 2px;
       }
     }
+
+    div.annotations {
+      margin-top: 1.5rem;
+      height: 300px;
+      overflow-y: auto;
+      background-color: #f8f8f8;
+      padding: 1.5rem 1rem;
+
+      div.coto {
+        margin-bottom: 1.5rem;
+        box-sizing: border-box;
+        width: 100%;
+      }
+
+      div.highlight {
+        margin-bottom: 1rem;
+      }
+
+      div.note {
+        margin-bottom: 1rem;
+        border-radius: 4px;
+        padding: 1rem;
+        background-color: #eee;
+      }
+    }
   }
 }
 

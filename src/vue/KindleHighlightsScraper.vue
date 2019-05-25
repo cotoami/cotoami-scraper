@@ -18,6 +18,16 @@
             v-model="cotonomaName"
           >
         </div>
+        <div class="annotations">
+          <div class="coto" v-for="annotation in annotations" v-bind:key="annotation.id">
+            <div class="highlight" v-if="annotation.highlight">{{ annotation.highlight }}</div>
+            <div class="note" v-if="annotation.note">Note: {{ annotation.note }}</div>
+            <a
+              v-bind:href="makeAnnotationUrl(annotation)"
+              target="_blank"
+            >{{ makeAnnotationUrl(annotation) }}</a>
+          </div>
+        </div>
       </div>
       <div class="buttons">
         <button class="button" v-on:click="cancel()" v-if="!posting">Cancel</button>
@@ -63,6 +73,7 @@ const _scrapePageInfo = $ => {
 const _scrapeAnnotations = ($, annotationDivs) => {
   let annotations = [];
   $(annotationDivs).each(function(index, element) {
+    const id = $(this).attr("id");
     const note = $(this)
       .find("span#note")
       .text()
@@ -76,6 +87,7 @@ const _scrapeAnnotations = ($, annotationDivs) => {
       .val();
     if (location) {
       annotations.push({
+        id: id,
         note: note && note !== "" ? note : null,
         highlight: highlight && highlight !== "" ? highlight : null,
         location: location
@@ -190,6 +202,12 @@ export default {
 
     cancel() {
       this.$emit("cancel");
+    },
+
+    makeAnnotationUrl(annotation) {
+      return `kindle://book?action=open&asin=${this.asin}&location=${
+        annotation.location
+      }`;
     },
 
     markdown() {

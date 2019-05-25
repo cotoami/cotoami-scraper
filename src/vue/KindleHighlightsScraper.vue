@@ -19,7 +19,8 @@
           >
         </div>
         <div class="annotations">
-          <div class="coto" v-for="annotation in annotations" v-bind:key="annotation.id">
+          <div class="coto" v-for="(annotation, index) in annotations" v-bind:key="annotation.id">
+            <div class="number">{{ index + 1 }}.</div>
             <div class="highlight" v-if="annotation.highlight">{{ annotation.highlight }}</div>
             <div class="note" v-if="annotation.note">Note: {{ annotation.note }}</div>
             <a

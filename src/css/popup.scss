@@ -116,6 +116,13 @@
         margin-bottom: 1.5rem;
         box-sizing: border-box;
         width: 100%;
+        padding-top: 6px;
+
+        div.number {
+          font-size: 1.3rem;
+          font-weight: bold;
+          margin-bottom: 2px;
+        }
       }
 
       div.highlight {

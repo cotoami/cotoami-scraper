@@ -36,7 +36,7 @@
           class="button button-primary"
           v-on:click="post()"
           v-bind:disabled="posting"
-        >{{ posting ? 'Posting...' : 'Post' }}</button>
+        >{{ posting ? `Posting... ${postCount} / ${annotations.length}` : 'Post' }}</button>
       </div>
     </div>
     <div id="scaping" v-else-if="scaping">
@@ -115,6 +115,7 @@ export default {
       scaping: false,
       scraped: false,
       posting: false,
+      postCount: 0,
       posted: false,
       error: null
     };
@@ -211,16 +212,32 @@ export default {
       }`;
     },
 
-    markdown() {
-      return this.asin;
+    markdown(annotation) {
+      const url = this.makeAnnotationUrl(annotation);
+      return (
+        (annotation.highlight ? `${annotation.highlight} \n \n` : "") +
+        (annotation.note ? `> ${annotation.note} \n \n` : "") +
+        `[${url}](${url})`
+      );
     },
 
     post() {
       this.posting = true;
-      Utils.postCoto(this.markdown(), null)
+      this.recursivePost(0);
+    },
+
+    recursivePost(index) {
+      if (this.annotations.length <= index) {
+        this.posting = false;
+        this.posted = true;
+        return;
+      }
+
+      const content = this.markdown(this.annotations[index]);
+      Utils.postCoto(content, null)
         .then(json => {
-          this.posting = false;
-          this.posted = true;
+          this.postCount++;
+          this.recursivePost(index + 1);
         })
         .catch(error => {
           this.error = error;

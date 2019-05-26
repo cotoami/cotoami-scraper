@@ -13,7 +13,7 @@
           <input
             type="text"
             class="cotonoma-name u-full-width"
-            placeholder="Cotonoma name"
+            placeholder="Cotonoma name (optional)"
             maxlength="50"
             v-model="cotonomaName"
           >
@@ -223,10 +223,16 @@ export default {
 
     post() {
       this.posting = true;
-      this.recursivePost(0);
+      Utils.getOrCreateCotonoma(
+        this.cotonomaName,
+        cotonomaId => this.recursivePost(0, cotonomaId),
+        error => {
+          this.error = error;
+        }
+      );
     },
 
-    recursivePost(index) {
+    recursivePost(index, cotonomaId) {
       if (this.annotations.length <= index) {
         this.posting = false;
         this.posted = true;
@@ -234,10 +240,10 @@ export default {
       }
 
       const content = this.markdown(this.annotations[index]);
-      Utils.postCoto(content, null)
+      Utils.postCoto(content, cotonomaId)
         .then(json => {
           this.postCount++;
-          this.recursivePost(index + 1);
+          this.recursivePost(index + 1, cotonomaId);
         })
         .catch(error => {
           this.error = error;

@@ -27,6 +27,30 @@ export default class {
     }
   }
 
+  static getOrCreateCotonoma(name, cotonomaIdCallback, errorCallback) {
+    if (name && name.trim() !== "") {
+      return fetch(COTOAMI_URL + "/api/cotonomas", {
+        credentials: "include",
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+          "X-Cotoami-Client-Id": "dummy"
+        },
+        body: JSON.stringify({name: name})
+      })
+        .then(this.checkStatusAndParseBodyAsJson.bind(this))
+        .then(json => {
+          cotonomaIdCallback(json.id);
+        })
+        .catch(error => {
+          errorCallback(error);
+        });
+    } else {
+      cotonomaIdCallback(null);
+    }
+  }
+
   static postCoto(content, cotonomaId) {
     return fetch(COTOAMI_URL + "/api/cotos", {
       credentials: "include",

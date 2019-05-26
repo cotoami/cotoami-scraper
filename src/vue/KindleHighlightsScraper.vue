@@ -21,8 +21,8 @@
         <div class="annotations">
           <div class="coto" v-for="(annotation, index) in annotations" v-bind:key="annotation.id">
             <div class="number">{{ index + 1 }}.</div>
-            <div class="highlight" v-if="annotation.highlight">{{ annotation.highlight }}</div>
-            <div class="note" v-if="annotation.note">Note: {{ annotation.note }}</div>
+            <blockquote class="highlight" v-if="annotation.highlight">{{ annotation.highlight }}</blockquote>
+            <div class="note" v-if="annotation.note">{{ annotation.note }}</div>
             <a
               v-bind:href="makeAnnotationUrl(annotation)"
               target="_blank"
@@ -215,8 +215,8 @@ export default {
     markdown(annotation) {
       const url = this.makeAnnotationUrl(annotation);
       return (
-        (annotation.highlight ? `${annotation.highlight} \n \n` : "") +
-        (annotation.note ? `> ${annotation.note} \n \n` : "") +
+        (annotation.highlight ? `> ${annotation.highlight} \n \n` : "") +
+        (annotation.note ? `${annotation.note} \n \n` : "") +
         `[${this.title} - ${annotation.location}](${url})`
       );
     },

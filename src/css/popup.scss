@@ -119,21 +119,46 @@
         padding-top: 6px;
 
         div.number {
+          margin-bottom: 4px;
           font-size: 1.3rem;
           font-weight: bold;
-          margin-bottom: 2px;
         }
       }
 
-      div.highlight {
+      blockquote.highlight {
+        margin-top: 0;
         margin-bottom: 1rem;
+        margin-left: 0.5em;
+        margin-right: 0.5em;
+        color: #888;
+        quotes: "\201C" "\201D";
+
+        &:before {
+          color: #ccc;
+          font-family: serif;
+          content: open-quote;
+          font-size: 45px;
+          line-height: 0.1em;
+          margin-right: 5px;
+          vertical-align: -20px;
+        }
+
+        &:after {
+          color: #ccc;
+          font-family: serif;
+          content: close-quote;
+          font-size: 45px;
+          line-height: 0.1em;
+          vertical-align: -27px;
+        }
+
+        p {
+          padding-left: 1em;
+        }
       }
 
       div.note {
         margin-bottom: 1rem;
-        border-radius: 4px;
-        padding: 1rem;
-        background-color: #eee;
       }
     }
   }

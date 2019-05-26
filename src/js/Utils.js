@@ -37,7 +37,7 @@ export default class {
           "X-Requested-With": "XMLHttpRequest",
           "X-Cotoami-Client-Id": "dummy"
         },
-        body: JSON.stringify({name: name})
+        body: JSON.stringify({ name: name })
       })
         .then(this.checkStatusAndParseBodyAsJson.bind(this))
         .then(json => {

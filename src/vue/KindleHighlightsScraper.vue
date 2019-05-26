@@ -26,7 +26,7 @@
             <a
               v-bind:href="makeAnnotationUrl(annotation)"
               target="_blank"
-            >{{ makeAnnotationUrl(annotation) }}</a>
+            >{{ title }} - {{ annotation.location }}</a>
           </div>
         </div>
       </div>
@@ -217,7 +217,7 @@ export default {
       return (
         (annotation.highlight ? `${annotation.highlight} \n \n` : "") +
         (annotation.note ? `> ${annotation.note} \n \n` : "") +
-        `[${url}](${url})`
+        `[${this.title} - ${annotation.location}](${url})`
       );
     },
 

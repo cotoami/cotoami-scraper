@@ -2,7 +2,7 @@
   <div id="page-link-scraper">
     <div id="error" v-if="error">Something went wrong...</div>
     <div id="posted" v-else-if="posted">
-      <img src="../images/done.gif"> Posted.
+      <img src="../../images/done.gif"> Posted.
     </div>
     <div id="scraped" v-else-if="scraped">
       <div id="scraped-content">
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import Utils from "../js/Utils.js";
+import Utils from "../../js/Utils.js";
 
 export default {
   props: ["cotoamiUrl"],

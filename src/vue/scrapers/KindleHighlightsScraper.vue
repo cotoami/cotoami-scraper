@@ -2,7 +2,7 @@
   <div id="kindle-highlights-scraper">
     <div id="error" v-if="error">Error: {{ error }}</div>
     <div id="posted" v-else-if="posted">
-      <img src="../images/done.gif"> Posted.
+      <img src="../../images/done.gif"> Posted.
     </div>
     <div id="scraped" v-else-if="scraped">
       <div id="scraped-content">
@@ -40,7 +40,7 @@
       </div>
     </div>
     <div id="scaping" v-else-if="scaping">
-      <img src="../images/loading.gif">
+      <img src="../../images/loading.gif">
       Scaping...
     </div>
   </div>
@@ -50,7 +50,7 @@
 import "whatwg-fetch";
 import _ from "lodash";
 import cheerio from "cheerio";
-import Utils from "../js/Utils.js";
+import Utils from "../../js/Utils.js";
 
 const _codeToScrapeBasicInfo = `
   var asin = document.getElementById('kp-notebook-annotations-asin').getAttribute('value');

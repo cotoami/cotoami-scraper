@@ -44,9 +44,9 @@
 <script>
 import "whatwg-fetch";
 import Utils from "../js/Utils.js";
-import PageLinkScraper from "./PageLinkScraper.vue";
-import SelectionScraper from "./SelectionScraper.vue";
-import KindleHighlightsScraper from "./KindleHighlightsScraper.vue";
+import PageLinkScraper from "./scrapers/PageLinkScraper.vue";
+import SelectionScraper from "./scrapers/SelectionScraper.vue";
+import KindleHighlightsScraper from "./scrapers/KindleHighlightsScraper.vue";
 
 export default {
   data() {

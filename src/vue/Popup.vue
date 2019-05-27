@@ -12,6 +12,7 @@
           <img class="avatar" v-bind:src="session.amishi.avatar_url">
           <span class="name">{{session.amishi.display_name}}</span>
         </div>
+        <div id="cotoami-url">{{cotoamiUrl}}</div>
         <div id="scrape-buttons">
           <div id="scrape-title">
             <button class="button" v-on:click="scraper = 'page-link-scraper'">Page link</button>

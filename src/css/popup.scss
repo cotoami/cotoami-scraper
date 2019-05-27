@@ -15,7 +15,7 @@
 
   #amishi {
     margin-top: 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
     text-align: center;
 
     img.avatar {
@@ -29,10 +29,17 @@
     }
 
     span.name {
-      color: #aaa;
+      color: #999;
       font-weight: 700;
       padding-right: 1rem;
     }
+  }
+
+  #cotoami-url {
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #bbb;
   }
 
   #scrape-buttons {

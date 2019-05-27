@@ -104,6 +104,8 @@ const _finishScrapedAnnotations = annotations => {
 };
 
 export default {
+  props: ["cotoamiUrl"],
+
   data() {
     return {
       hostname: null,
@@ -197,8 +199,6 @@ export default {
         this.annotations = _finishScrapedAnnotations(annotations);
         this.scraped = true;
         this.scaping = false;
-        console.log("this.asin", this.asin);
-        console.log("this.annotations", this.annotations);
       }
     },
 
@@ -224,6 +224,7 @@ export default {
     post() {
       this.posting = true;
       Utils.getOrCreateCotonoma(
+        this.cotoamiUrl,
         this.cotonomaName,
         cotonomaId => this.recursivePost(0, cotonomaId),
         error => {
@@ -240,7 +241,7 @@ export default {
       }
 
       const content = this.markdown(this.annotations[index]);
-      Utils.postCoto(content, cotonomaId)
+      Utils.postCoto(this.cotoamiUrl, content, cotonomaId)
         .then(json => {
           this.postCount++;
           this.recursivePost(index + 1, cotonomaId);

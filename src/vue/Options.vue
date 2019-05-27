@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import Utils from "../js/Utils.js";
+
 export default {
   data() {
     return {
@@ -46,6 +48,7 @@ export default {
     okToSave() {
       return (
         this.cotoamiUrlInput.trim() !== "" &&
+        Utils.isValidUrl(this.cotoamiUrlInput) &&
         this.cotoamiUrlInput.trim() != this.cotoamiUrl
       );
     }

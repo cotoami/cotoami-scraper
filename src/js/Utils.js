@@ -1,4 +1,5 @@
 import "whatwg-fetch";
+import _ from "lodash";
 
 const _throwStatusError = response => {
   var error = new Error(response.statusText);
@@ -9,6 +10,10 @@ const _throwStatusError = response => {
 export default class {
   static isAbsoluteUrl(url) {
     return /^[a-z][a-z\d+.-]*:/.test(url);
+  }
+
+  static isValidUrl(url) {
+    return _.startsWith(url, 'http://') || _.startsWith(url, 'https://');
   }
 
   static checkStatusAndParseBodyAsJson(response) {

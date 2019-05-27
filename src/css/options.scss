@@ -1,3 +1,23 @@
 #options {
-  font-size: 3rem;
+  display: flex;
+  justify-content: center; 
+
+  #content {
+    width: 300px;
+    margin-top: 1.5rem;
+  }
+
+  #title {
+    text-align: center;
+    font-size: 1.8rem;
+  }
+
+  #options-form {
+    margin-top: 2rem;
+  }
+
+  #buttons {
+    margin-top: 1rem;
+    text-align: center;
+  }
 }

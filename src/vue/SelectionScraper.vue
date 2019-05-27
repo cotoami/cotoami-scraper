@@ -48,6 +48,8 @@ _turndown.addRule("preWithoutCode", {
 });
 
 export default {
+  props: ["cotoamiUrl"],
+
   data() {
     return {
       title: "",
@@ -124,7 +126,7 @@ export default {
 
     post() {
       this.posting = true;
-      Utils.postCoto(this.markdown(), null)
+      Utils.postCoto(this.cotoamiUrl, this.markdown(), null)
         .then(json => {
           this.posting = false;
           this.posted = true;

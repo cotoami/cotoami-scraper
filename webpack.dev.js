@@ -7,9 +7,6 @@ module.exports = merge(common, {
   mode: 'development',
   devtool: 'inline-source-map',
   plugins: [
-    new webpack.DefinePlugin({
-      COTOAMI_URL: JSON.stringify('http://localhost:4000')
-    }),
     new ExtensionReloader()
   ]
 });

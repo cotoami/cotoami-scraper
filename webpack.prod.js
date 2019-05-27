@@ -7,9 +7,6 @@ module.exports = merge(common, {
   mode: 'production',
   devtool: 'source-map',
   plugins: [
-    new webpack.DefinePlugin({
-      COTOAMI_URL: JSON.stringify('https://cotoa.me')
-    }),
     new ReplaceInFileWebpackPlugin([{
       dir: 'dist',
       files: ['manifest.json'],

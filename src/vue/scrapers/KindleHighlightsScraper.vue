@@ -1,6 +1,6 @@
 <template>
   <div id="kindle-highlights-scraper">
-    <div id="error" v-if="error">Error: {{ error }}</div>
+    <div id="error" v-if="error">{{ error }}</div>
     <div id="posted" v-else-if="posted">
       <img src="../../images/done.gif"> Posted.
     </div>
@@ -168,6 +168,9 @@ export default {
             nextPageStartToken,
             annotations
           );
+        })
+        .catch(error => {
+          this.error = error;
         });
     },
 

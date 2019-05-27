@@ -14,8 +14,12 @@
           >
         </div>
         <div id="buttons" class="row">
-          <button class="button" v-on:click="reset()" v-if="!posting">Reset</button>
-          <button class="button button-primary" v-bind:disabled="!okToSave()">Save</button>
+          <button class="button" v-on:click="reset()" v-if="!saving">Reset</button>
+          <button
+            class="button button-primary"
+            v-bind:disabled="!okToSave() || saving"
+            v-on:click="save()"
+          >{{ saving ? 'Saving...' : 'Save' }}</button>
         </div>
       </form>
     </div>
@@ -29,7 +33,8 @@ export default {
   data() {
     return {
       cotoamiUrl: "",
-      cotoamiUrlInput: ""
+      cotoamiUrlInput: "",
+      saving: false
     };
   },
 
@@ -51,6 +56,16 @@ export default {
         Utils.isValidUrl(this.cotoamiUrlInput) &&
         this.cotoamiUrlInput.trim() != this.cotoamiUrl
       );
+    },
+
+    save() {
+      const url = _.trimEnd(this.cotoamiUrlInput.trim(), "/");
+      this.saving = true;
+      chrome.storage.sync.set({ cotoamiUrl: url }, () => {
+        this.cotoamiUrl = url;
+        this.cotoamiUrlInput = url;
+        this.saving = false;
+      });
     }
   },
 

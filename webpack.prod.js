@@ -12,10 +12,6 @@ module.exports = merge(common, {
       files: ['manifest.json'],
       rules: [
         {
-          search: 'http://localhost:4000/',
-          replace: 'https://cotoa.me/'
-        },
-        {
           search: /"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",/,
           replace: ''
         }

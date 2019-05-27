@@ -5,7 +5,7 @@
     </div>
     <div id="in-session" v-else-if="session">
       <div v-if="scraper">
-        <component v-bind:is="scraper" v-on:cancel="closeScraper"></component>
+        <component v-bind:is="scraper" v-bind:cotoami-url="cotoamiUrl" v-on:cancel="closeScraper"></component>
       </div>
       <div id="main-menu" v-else>
         <div id="amishi">

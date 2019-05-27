@@ -27,9 +27,9 @@ export default class {
     }
   }
 
-  static getOrCreateCotonoma(name, cotonomaIdCallback, errorCallback) {
+  static getOrCreateCotonoma(cotoamiUrl, name, cotonomaIdCallback, errorCallback) {
     if (name && name.trim() !== "") {
-      return fetch(COTOAMI_URL + "/api/cotonomas", {
+      return fetch(cotoamiUrl + "/api/cotonomas", {
         credentials: "include",
         method: "PUT",
         headers: {
@@ -51,8 +51,8 @@ export default class {
     }
   }
 
-  static postCoto(content, cotonomaId) {
-    return fetch(COTOAMI_URL + "/api/cotos", {
+  static postCoto(cotoamiUrl, content, cotonomaId) {
+    return fetch(cotoamiUrl + "/api/cotos", {
       credentials: "include",
       method: "POST",
       headers: {

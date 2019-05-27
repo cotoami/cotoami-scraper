@@ -50,7 +50,7 @@ import KindleHighlightsScraper from "./KindleHighlightsScraper.vue";
 export default {
   data() {
     return {
-      cotoamiUrl: COTOAMI_URL,
+      cotoamiUrl: "",
       url: "",
       loadingSession: true,
       session: null,
@@ -66,18 +66,23 @@ export default {
   },
 
   methods: {
+    init() {
+      chrome.storage.sync.get("cotoamiUrl", data => {
+        this.cotoamiUrl = data.cotoamiUrl;
+        this.getUrl();
+        this.fetchSession(this.cotoamiUrl);
+        this.checkSelection();
+      });
+    },
+
     getUrl() {
       chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
         this.url = tabs[0].url;
       });
     },
 
-    inKindleHighlights() {
-      return new URL(this.url).hostname.indexOf("read.amazon.") === 0;
-    },
-
-    fetchSession() {
-      fetch(COTOAMI_URL + "/api/public/session", {
+    fetchSession(cotoamiUrl) {
+      fetch(cotoamiUrl + "/api/public/session", {
         credentials: "include"
       })
         .then(Utils.checkStatusAndParseBodyAsJson.bind(Utils))
@@ -102,15 +107,17 @@ export default {
       );
     },
 
+    inKindleHighlights() {
+      return new URL(this.url).hostname.indexOf("read.amazon.") === 0;
+    },
+
     closeScraper() {
       this.scraper = null;
     }
   },
 
   beforeMount() {
-    this.getUrl();
-    this.fetchSession();
-    this.checkSelection();
+    this.init();
   }
 };
 </script>

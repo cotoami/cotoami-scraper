@@ -9,6 +9,20 @@
         <div class="coto">
           <a v-bind:href="url" target="_blank">{{ title }}</a>
         </div>
+        <div class="will-be-posted-to">
+          <div class="label">
+            <span>will be posted to:</span>
+          </div>
+          <div class="cotonoma">
+            <input
+              type="text"
+              class="cotonoma-name u-full-width"
+              placeholder="Cotonoma name (optional)"
+              maxlength="50"
+              v-model="cotonomaName"
+            >
+          </div>
+        </div>
       </div>
       <div class="buttons">
         <button class="button" v-on:click="cancel()" v-if="!posting">Cancel</button>
@@ -31,6 +45,7 @@ export default {
 
   data() {
     return {
+      cotonomaName: "",
       title: "",
       url: "",
       scaping: false,

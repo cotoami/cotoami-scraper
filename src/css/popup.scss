@@ -71,6 +71,26 @@
     div.selected-html {
       margin-bottom: 1rem;
     }
+
+    div.will-be-posted-to {
+      margin-top: 1rem;
+      display: flex;
+
+      div.label {
+        width: 120px;
+        padding-left: 1.5rem;
+        display: flex;
+        align-items: center;
+      }
+
+      div.cotonoma {
+        flex: 1;
+
+        input {
+          margin-bottom: 0;
+        }
+      }
+    }
   
     div.buttons {
       margin-top: 1.5rem;

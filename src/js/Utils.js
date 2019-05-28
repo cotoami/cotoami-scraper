@@ -34,15 +34,15 @@ export default class {
 
   static getOrCreateCotonoma(cotoamiUrl, name, cotonomaIdCallback, errorCallback) {
     if (name && name.trim() !== "") {
-      return fetch(cotoamiUrl + "/api/cotonomas", {
+      const url = cotoamiUrl + "/api/cotonomas/name/" + encodeURIComponent(name);
+      return fetch(url, {
         credentials: "include",
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           "X-Requested-With": "XMLHttpRequest",
           "X-Cotoami-Client-Id": "dummy"
-        },
-        body: JSON.stringify({ name: name })
+        }
       })
         .then(this.checkStatusAndParseBodyAsJson.bind(this))
         .then(json => {

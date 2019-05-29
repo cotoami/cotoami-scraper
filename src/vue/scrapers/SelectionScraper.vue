@@ -1,6 +1,6 @@
 <template>
   <div id="selection-scraper">
-    <div id="error" v-if="error">Something went wrong...</div>
+    <div id="error" v-if="error">{{ error }}</div>
     <div id="posted" v-else-if="posted">
       <img src="../../images/done.gif"> Posted.
     </div>
@@ -9,6 +9,12 @@
         <div class="coto">
           <div class="selected-html" v-html="selectedHtml"></div>
           <a v-bind:href="url" target="_blank">{{ title }}</a>
+        </div>
+        <div class="will-be-posted-to">
+          <div class="label">
+            <span>will be posted to:</span>
+          </div>
+          <cotonoma-name-input v-bind:cotoami-url="cotoamiUrl" v-model="cotonomaName"></cotonoma-name-input>
         </div>
       </div>
       <div class="buttons">
@@ -29,6 +35,7 @@ import _ from "lodash";
 import $ from "jquery";
 import Turndown from "turndown";
 import Url from "url";
+import CotonomaNameInput from "./CotonomaNameInput.vue";
 import Utils from "../../js/Utils.js";
 
 const _turndown = new Turndown();
@@ -50,8 +57,13 @@ _turndown.addRule("preWithoutCode", {
 export default {
   props: ["cotoamiUrl"],
 
+  components: {
+    CotonomaNameInput
+  },
+
   data() {
     return {
+      cotonomaName: "",
       title: "",
       url: "",
       selectedHtml: "",
@@ -126,14 +138,23 @@ export default {
 
     post() {
       this.posting = true;
-      Utils.postCoto(this.cotoamiUrl, this.markdown(), null)
-        .then(json => {
-          this.posting = false;
-          this.posted = true;
-        })
-        .catch(error => {
+      Utils.getOrCreateCotonoma(
+        this.cotoamiUrl,
+        this.cotonomaName,
+        cotonomaId => {
+          Utils.postCoto(this.cotoamiUrl, this.markdown(), cotonomaId)
+            .then(json => {
+              this.posting = false;
+              this.posted = true;
+            })
+            .catch(error => {
+              this.error = error;
+            });
+        },
+        error => {
           this.error = error;
-        });
+        }
+      );
     }
   },
 

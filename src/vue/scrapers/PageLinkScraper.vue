@@ -1,6 +1,6 @@
 <template>
   <div id="page-link-scraper">
-    <div id="error" v-if="error">Something went wrong...</div>
+    <div id="error" v-if="error">{{ error }}</div>
     <div id="posted" v-else-if="posted">
       <img src="../../images/done.gif"> Posted.
     </div>

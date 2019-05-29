@@ -34,7 +34,7 @@ export default class {
 
   static getOrCreateCotonoma(cotoamiUrl, name, cotonomaIdCallback, errorCallback) {
     if (name && name.trim() !== "") {
-      const url = cotoamiUrl + "/api/cotonomas/name/" + encodeURIComponent(name);
+      const url = cotoamiUrl + "/api/cotonomas/name/" + encodeURIComponent(name.trim());
       return fetch(url, {
         credentials: "include",
         method: "PUT",

@@ -9,15 +9,7 @@
         <div class="message">
           <span class="count">{{ annotations.length }}</span> highlights will be posted to:
         </div>
-        <div class="cotonoma">
-          <input
-            type="text"
-            class="cotonoma-name u-full-width"
-            placeholder="Cotonoma name (optional)"
-            maxlength="50"
-            v-model="cotonomaName"
-          >
-        </div>
+        <cotonoma-name-input v-bind:cotoami-url="cotoamiUrl" v-model="cotonomaName"></cotonoma-name-input>
         <div class="annotations">
           <div class="coto" v-for="(annotation, index) in annotations" v-bind:key="annotation.id">
             <div class="number">{{ index + 1 }}.</div>
@@ -51,6 +43,7 @@ import "whatwg-fetch";
 import _ from "lodash";
 import cheerio from "cheerio";
 import Utils from "../../js/Utils.js";
+import CotonomaNameInput from "./CotonomaNameInput.vue";
 
 const _codeToScrapeBasicInfo = `
   var asin = document.getElementById('kp-notebook-annotations-asin').getAttribute('value');
@@ -105,6 +98,10 @@ const _finishScrapedAnnotations = annotations => {
 
 export default {
   props: ["cotoamiUrl"],
+
+  components: {
+    CotonomaNameInput
+  },
 
   data() {
     return {

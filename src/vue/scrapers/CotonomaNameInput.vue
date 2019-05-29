@@ -11,6 +11,7 @@
         class="cotonoma-name u-full-width"
         placeholder="Cotonoma name (optional)"
         maxlength="50"
+        :value="internalValue"
       >
     </vue-simple-suggest>
   </div>

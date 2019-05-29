@@ -14,13 +14,14 @@
             <span>will be posted to:</span>
           </div>
           <div class="cotonoma">
-            <input
-              type="text"
-              class="cotonoma-name u-full-width"
-              placeholder="Cotonoma name (optional)"
-              maxlength="50"
-              v-model="cotonomaName"
-            >
+            <vue-simple-suggest v-model="cotonomaName" :list="suggestions" :filter-by-query="true">
+              <input
+                type="text"
+                class="cotonoma-name u-full-width"
+                placeholder="Cotonoma name (optional)"
+                maxlength="50"
+              >
+            </vue-simple-suggest>
           </div>
         </div>
       </div>
@@ -38,10 +39,16 @@
 </template>
 
 <script>
+import VueSimpleSuggest from "vue-simple-suggest";
+import "vue-simple-suggest/dist/styles.css";
 import Utils from "../../js/Utils.js";
 
 export default {
   props: ["cotoamiUrl"],
+
+  components: {
+    VueSimpleSuggest
+  },
 
   data() {
     return {
@@ -69,6 +76,10 @@ export default {
 
     cancel() {
       this.$emit("cancel");
+    },
+
+    suggestions() {
+      return ["Vue.js", "React.js", "Angular.js", "aaa", "abb", "abc"];
     },
 
     markdown() {

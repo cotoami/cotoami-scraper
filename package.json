@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/marubinotto/cotoami-scraper.git"
+    "url": "https://github.com/cotoami/cotoami-scraper.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/marubinotto/cotoami-scraper/issues"
+    "url": "https://github.com/cotoami/cotoami-scraper/issues"
   },
-  "homepage": "https://github.com/marubinotto/cotoami-scraper",
+  "homepage": "https://github.com/cotoami/cotoami-scraper",
   "devDependencies": {
     "copy-webpack-plugin": "^5.0.3",
     "css-loader": "^2.1.1",

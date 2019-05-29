@@ -56,6 +56,23 @@ export default class {
     }
   }
 
+  static fetchCotonomaSuggestions(cotoamiUrl, query) {
+    if (query && query.trim() !== "") {
+      const url = cotoamiUrl + "/api/cotonomas/suggestions/" + encodeURIComponent(query);
+      return fetch(url, {
+        credentials: "include"
+      })
+        .then(this.checkStatusAndParseBodyAsJson.bind(this))
+        .then(json => _.map(json, "name"))
+        .catch(error => {
+          console.log("request failed", error);
+          return [];
+        });
+    } else {
+      return [];
+    }
+  }
+
   static postCoto(cotoamiUrl, content, cotonomaId) {
     return fetch(cotoamiUrl + "/api/cotos", {
       credentials: "include",

@@ -14,7 +14,12 @@
             <span>will be posted to:</span>
           </div>
           <div class="cotonoma">
-            <vue-simple-suggest v-model="cotonomaName" :list="suggestions" :filter-by-query="true">
+            <vue-simple-suggest
+              v-model="cotonomaName"
+              :min-length="1"
+              :list="suggestions"
+              :filter-by-query="false"
+            >
               <input
                 type="text"
                 class="cotonoma-name u-full-width"
@@ -78,8 +83,8 @@ export default {
       this.$emit("cancel");
     },
 
-    suggestions() {
-      return ["Vue.js", "React.js", "Angular.js", "aaa", "abb", "abc"];
+    suggestions(query) {
+      return Utils.fetchCotonomaSuggestions(this.cotoamiUrl, query);
     },
 
     markdown() {

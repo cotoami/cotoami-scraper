@@ -74,14 +74,23 @@ export default {
 
     post() {
       this.posting = true;
-      Utils.postCoto(this.cotoamiUrl, this.markdown(), null)
-        .then(json => {
-          this.posting = false;
-          this.posted = true;
-        })
-        .catch(error => {
+      Utils.getOrCreateCotonoma(
+        this.cotoamiUrl,
+        this.cotonomaName,
+        cotonomaId => {
+          Utils.postCoto(this.cotoamiUrl, this.markdown(), cotonomaId)
+            .then(json => {
+              this.posting = false;
+              this.posted = true;
+            })
+            .catch(error => {
+              this.error = error;
+            });
+        },
+        error => {
           this.error = error;
-        });
+        }
+      );
     }
   },
 

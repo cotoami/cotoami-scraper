@@ -16,4 +16,4 @@ It scrapes the selection of page content preserving its styles as long as Cotoam
 
 ### Kindle highlights
 
-It scrapes the kindle highlights at the Kindle websites whose url starts with `https://read.amazon`.
+It scrapes the kindle highlights at the Kindle websites whose url start with `https://read.amazon`.

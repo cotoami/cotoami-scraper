@@ -2,7 +2,7 @@
 
 Cotoami Scraper is a Chrome Extension that scrapes web pages to generate inputs for [Cotoami knowledge-bases](https://github.com/cotoami/cotoami).
 
-## The types of scrapers
+## Types of scraping
 
 Currently, it supports three types of scraping: **Page link**, **Selection** and **Kindle highlights**.
 

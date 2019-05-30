@@ -230,12 +230,13 @@ export default {
           _.reduce(
             this.annotations,
             (promise, annotation) => {
-              return promise.then(() => {
+              return promise.then(response => {
+                if (response) this.postCount++;
                 const content = this.markdown(annotation);
                 return Utils.postCoto(this.cotoamiUrl, content, cotonomaId);
               });
             },
-            Promise.resolve(0)
+            Promise.resolve(null)
           )
             .then(() => {
               this.posting = false;

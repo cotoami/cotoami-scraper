@@ -226,29 +226,29 @@ export default {
       Utils.getOrCreateCotonoma(
         this.cotoamiUrl,
         this.cotonomaName,
-        cotonomaId => this.recursivePost(0, cotonomaId),
+        cotonomaId => {
+          _.reduce(
+            this.annotations,
+            (promise, annotation) => {
+              return promise.then(() => {
+                const content = this.markdown(annotation);
+                return Utils.postCoto(this.cotoamiUrl, content, cotonomaId);
+              });
+            },
+            Promise.resolve(0)
+          )
+            .then(() => {
+              this.posting = false;
+              this.posted = true;
+            })
+            .catch(error => {
+              this.error = error;
+            });
+        },
         error => {
           this.error = error;
         }
       );
-    },
-
-    recursivePost(index, cotonomaId) {
-      if (this.annotations.length <= index) {
-        this.posting = false;
-        this.posted = true;
-        return;
-      }
-
-      const content = this.markdown(this.annotations[index]);
-      Utils.postCoto(this.cotoamiUrl, content, cotonomaId)
-        .then(json => {
-          this.postCount++;
-          this.recursivePost(index + 1, cotonomaId);
-        })
-        .catch(error => {
-          this.error = error;
-        });
     }
   },
 

@@ -10,9 +10,9 @@
       <div id="main-menu" v-else>
         <div id="amishi">
           <img class="avatar" v-bind:src="session.amishi.avatar_url">
-          <span class="name">{{session.amishi.display_name}}</span>
+          <span class="name">{{ session.amishi.display_name }}</span>
         </div>
-        <div id="cotoami-url">{{cotoamiUrl}}</div>
+        <div id="cotoami-url">{{ cotoamiUrl }}</div>
 
         <div id="scrape-buttons" v-if="isCotoamiVersionOk()">
           <div id="scrape-title">
@@ -34,17 +34,17 @@
           </div>
         </div>
         <div id="not-supported-version" v-else>
-          <div>This extension requires Cotoami {{requiredCotoamiVersion()}} or later.</div>
+          <div>This extension requires Cotoami {{ requiredCotoamiVersion() }} or later.</div>
           <div
             class="server-version"
             v-if="session.app_version"
-          >(The server version is: {{session.app_version}})</div>
+          >(The server version is: {{ session.app_version }})</div>
         </div>
       </div>
     </div>
     <div id="no-session" v-else>
       You need to sign in to:
-      <a v-bind:href="cotoamiUrl" target="_blank">{{cotoamiUrl}}</a>
+      <a v-bind:href="cotoamiUrl" target="_blank">{{ cotoamiUrl }}</a>
     </div>
   </div>
 </template>

@@ -13,7 +13,8 @@
           <span class="name">{{session.amishi.display_name}}</span>
         </div>
         <div id="cotoami-url">{{cotoamiUrl}}</div>
-        <div id="scrape-buttons">
+
+        <div id="scrape-buttons" v-if="isCotoamiVersionOk()">
           <div id="scrape-title">
             <button class="button" v-on:click="scraper = 'page-link-scraper'">Page link</button>
           </div>
@@ -32,6 +33,13 @@
             >Kindle highlights</button>
           </div>
         </div>
+        <div id="not-supported-version" v-else>
+          <div>This extension requires Cotoami {{requiredCotoamiVersion()}} or later.</div>
+          <div
+            class="server-version"
+            v-if="session.app_version"
+          >(The server version is: {{session.app_version}})</div>
+        </div>
       </div>
     </div>
     <div id="no-session" v-else>
@@ -43,10 +51,13 @@
 
 <script>
 import "whatwg-fetch";
+import Semver from "semver";
 import Utils from "../js/Utils.js";
 import PageLinkScraper from "./scrapers/PageLinkScraper.vue";
 import SelectionScraper from "./scrapers/SelectionScraper.vue";
 import KindleHighlightsScraper from "./scrapers/KindleHighlightsScraper.vue";
+
+const REQUIRED_COTOAMI_VERSION = "0.23.0";
 
 export default {
   data() {
@@ -106,6 +117,21 @@ export default {
           this.textSelected = selection && selection[0] !== "";
         }
       );
+    },
+
+    requiredCotoamiVersion() {
+      return REQUIRED_COTOAMI_VERSION;
+    },
+
+    isCotoamiVersionOk() {
+      if (this.session.app_version) {
+        return Semver.gte(
+          Semver.coerce(this.session.app_version),
+          this.requiredCotoamiVersion()
+        );
+      } else {
+        return false;
+      }
     },
 
     inKindleHighlights() {

@@ -13,6 +13,17 @@
     text-align: center;
   }
 
+  #not-supported-version {
+    width: 300px;
+    padding: 0.5rem 1rem;
+    text-align: center;
+
+    div.server-version {
+      color: gray;
+      font-size: 1.2rem;
+    }
+  }
+
   #amishi {
     margin-top: 1rem;
     margin-bottom: 0.5rem;
